@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "db:ping": "docker exec -it learn.docker-postgres-1 psql -U postgres -d todo_db -c 'SELECT 1;'",
+    "db:status": "docker exec -it learn.docker-postgres-1 pg_isready -U postgres",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

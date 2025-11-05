@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   client:
+    container_name: learn.docker-client-1
     build: .
     ports:
       - "5173:5173"
@@ -11,9 +12,32 @@ services:
       - /app/node_modules
 
   api:
+    container_name: learn.docker-api-1
     build: ./todo-api
     ports:
       - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/todo_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=todo_db
     volumes:
       - ./todo-api:/app
       - /app/node_modules
+
+  postgres:
+    container_name: learn.docker-postgres-1
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=todo_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
