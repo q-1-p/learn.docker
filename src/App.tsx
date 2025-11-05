@@ -21,19 +21,35 @@ function App() {
     setTodos(data.todos);
   };
 
-  const handleAddTodo = () => {
+  const handleAddTodo = async () => {
     if (title.trim()) {
-      setTodos([...todos, { id: todos.length + 1, title, completed: false }]);
-      setTitle("");
+      const response = await fetch("http://localhost:3000/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title }),
+      });
+      if(response.ok){
+        setTodos(prev => [...prev, { id: prev.length + 1, title, completed: false }]);
+        setTitle("");
+      }
     }
   };
 
-  const handleToggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const handleToggleTodo = async (id: number, completed: boolean) => {
+    const response = await fetch(`http://localhost:3000/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ completed: !completed }),
+    });
+    if(response.ok){
+      setTodos(prev => prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !completed } : todo
+      ));
+    }
   };
 
   return (
@@ -82,7 +98,7 @@ function App() {
                   <input
                     type="checkbox"
                     checked={todo.completed}
-                    onChange={() => handleToggleTodo(todo.id)}
+                    onChange={() => handleToggleTodo(todo.id, todo.completed)}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                   />
                   <span
