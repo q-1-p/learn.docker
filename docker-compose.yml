@@ -2,18 +2,18 @@ version: '3.8'
 services:
   client:
     container_name: learn.docker-client-1
-    build: .
+    build: ./app
     ports:
       - "5173:5173"
     depends_on:
       - api
     volumes:
-      - .:/app
+      - ./app:/app
       - /app/node_modules
 
   api:
     container_name: learn.docker-api-1
-    build: ./todo-api
+    build: ./api
     ports:
       - "3000:3000"
     depends_on:
@@ -24,7 +24,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=todo_db
     volumes:
-      - ./todo-api:/app
+      - ./api:/app
       - /app/node_modules
 
   postgres:
