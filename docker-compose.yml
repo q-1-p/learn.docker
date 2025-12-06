@@ -16,28 +16,8 @@ services:
     build: ./api
     ports:
       - "3000:3000"
-    depends_on:
-      - postgres
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/todo_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=todo_db
+      - DATABASE_URL=postgresql://neondb_owner:npg_oce6ZdS2ghvH@ep-royal-hill-aam35fae-pooler.westus3.azure.neon.tech/neondb?sslmode=require&channel_binding=require
     volumes:
       - ./api:/app
       - /app/node_modules
-
-  postgres:
-    container_name: learn.docker-postgres-1
-    image: postgres:16-alpine
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=todo_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
