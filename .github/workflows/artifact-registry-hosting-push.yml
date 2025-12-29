@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: |
           cd api
-          docker build -t us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/learn-docker-api/api-image:${{ env.TAG }} .
+          docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/learn-docker-api/api-image:${{ env.TAG }} .
       - name: Push
         run: |
           docker push us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/learn-docker-api/api-image:${{ env.TAG }}
@@ -41,5 +41,6 @@ jobs:
             --image=us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/learn-docker-api/api-image:${{ env.TAG }} \
             --region=us-west1 \
             --service-account=${{ secrets.SERVICE_ACCOUNT }} \
+            --set-env-vars DATABASE_URL="${{ secrets.DATABASE_URL }}" \
             --allow-unauthenticated \
-            --port=8080
+            --port=3000

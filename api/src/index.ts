@@ -16,7 +16,11 @@ const app = new Hono();
 // 追加
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://learn-docker-e4749.web.app",
+      "https://learn-docker-e4749.firebaseapp.com"
+    ],
   })
 );
 
@@ -57,7 +61,8 @@ app.put("/todos/:id", async (c) => {
 serve(
   {
     fetch: app.fetch,
-    port: 3000,
+    port: Number(process.env.PORT) || 3000,
+    hostname: "0.0.0.0",
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);

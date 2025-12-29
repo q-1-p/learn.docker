@@ -16,14 +16,14 @@ function App() {
   }, []);
 
   const fetchTodos = async () => {
-    const response = await fetch("http://localhost:3000/todos");
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`);
     const data = await response.json();
     setTodos(data.todos);
   };
 
   const handleAddTodo = async () => {
     if (title.trim()) {
-      const response = await fetch("http://localhost:3000/todos", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +38,7 @@ function App() {
   };
 
   const handleToggleTodo = async (id: number, completed: boolean) => {
-    const response = await fetch(`http://localhost:3000/todos/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
